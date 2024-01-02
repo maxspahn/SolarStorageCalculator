@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<title>Chartjs Charts</title>
+</head>
+
+<body>
+
+  <!-- Form to select a field -->
+  <form method="post" action="{{ url_for('homepage') }}">
+      <label for="selected_field">Select Field:</label>
+      <select id="selected_field" name="selected_field">
+          <option value="internal_supply" {% if selected_field == 'internal_supply' %}selected{% endif %}>Internal Supply</option>
+          <option value="external_supply" {% if selected_field == 'external_supply' %}selected{% endif %}>External Supply</option>
+          <option value="consumption" {% if selected_field == 'consumption' %}selected{% endif %}>Consumption</option>
+          <option value="feed-in" {% if selected_field == 'feed-in' %}selected{% endif %}>Feed-In</option>
+          <option value="self-consumption" {% if selected_field == 'self-consumption' %}selected{% endif %}>Self Consumption</option>
+          <option value="generation" {% if selected_field == 'generation' %}selected{% endif %}>Generation</option>
+          <!-- Add more options based on your available fields -->
+      </select>
+
+      <label for="selected_day">Enter day:</label>
+      <input type="text" id="selected_day" name="selected_day" value="{{ selected_day }}">
+      <input type="submit" value="Submit">
+  </form>
+	<div style="height: 90vh; width: 100%;">
+		<canvas id="plot"></canvas>
+	</div>
+
+	<script>
+		const labels = {{ labels | tojson}};
+
+		const data = {
+			labels: labels,
+			datasets: [{
+				label: '',
+				backgroundColor: 'rgb(255, 99, 132)',
+				borderColor: 'rgb(255, 99, 132)',
+				data: {{ data | tojson}},
+			}]
+		};
+
+		const config = {
+			type: 'line',
+			data: data,
+			options: { maintainAspectRatio: false }
+		};
+
+		const plot = new Chart(
+			document.getElementById('plot'),
+			config
+		);
+
+	</script>
+</body>
+</html>
+
