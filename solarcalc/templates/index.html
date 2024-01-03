@@ -4,6 +4,17 @@
 <head>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<title>Chartjs Charts</title>
+  <style>
+    body, input, select {
+        font-size: 20px; /* Set your desired base font size */
+    }
+    .canvas-container {
+        display: inline-block;
+        margin-right: 10px; /* Adjust the margin as needed */
+        height: 30vh;
+        width: 30%;
+    }
+  </style>
 </head>
 
 <body>
@@ -23,11 +34,43 @@
 
       <label for="selected_day">Enter day:</label>
       <input type="text" id="selected_day" name="selected_day" value="{{ selected_day }}">
-      <input type="submit" value="Submit">
+      <label for="initial_charge">Enter initial_charge:</label>
+      <input type="text" id="initial_charge" name="initial_charge" value="{{ initial_charge }}">
+      <label for="capacity">Enter capacity:</label>
+      <input type="text" id="capacity" name="capacity" value="{{ capacity }}">
+      <input type="submit" value="Compute">
   </form>
-	<div style="height: 90vh; width: 100%;">
-		<canvas id="plot"></canvas>
-	</div>
+  <div>
+    <div class="canvas-container">
+        <canvas id="plot_internal"></canvas>
+    </div>
+    <div class="canvas-container">
+        <canvas id="plot_external"></canvas>
+    </div>
+    <div class="canvas-container">
+        <canvas id="plot_charge"></canvas>
+    </div>
+  </div>
+  <div>
+    <div class="canvas-container">
+        <canvas id="plot_internal_battery"></canvas>
+    </div>
+    <div class="canvas-container">
+        <canvas id="plot_external_battery"></canvas>
+    </div>
+    <div class="canvas-container">
+        <canvas id="plot"></canvas>
+    </div>
+  </div>
+
+  <label for="sum_feed_in">Sum Feed-In</label>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_feed_in }}" readonly>
+  <label for="sum_external">Sum External</label>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_external }}" readonly>
+  <label for="sum_feed_in">Sum Feed-In with Storage</label>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_feed_in_battery }}" readonly>
+  <label for="sum_external">Sum External with Storage</label>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_external_battery }}" readonly>
 
 	<script>
 		const labels = {{ labels | tojson}};
@@ -51,6 +94,112 @@
 		const plot = new Chart(
 			document.getElementById('plot'),
 			config
+		);
+
+
+		const data_internal = {
+			labels: labels,
+			datasets: [{
+				label: 'Generation',
+				backgroundColor: 'rgb(0, 255, 0)',
+				borderColor: 'rgb(0, 255, 0)',
+				data: {{ data_internal | tojson}},
+			}]
+		};
+
+		const config_internal = {
+			type: 'line',
+			data: data_internal,
+			options: { maintainAspectRatio: false }
+		};
+
+		const plot_internal = new Chart(
+			document.getElementById('plot_internal'),
+			config_internal
+		);
+
+		const data_external = {
+			labels: labels,
+			datasets: [{
+				label: 'Consumption',
+				backgroundColor: 'rgb(255, 0, 0)',
+				borderColor: 'rgb(255, 0, 0)',
+				data: {{ data_external | tojson}},
+			}]
+		};
+
+		const config_external = {
+			type: 'line',
+			data: data_external,
+			options: { maintainAspectRatio: false }
+		};
+
+		const plot_external = new Chart(
+			document.getElementById('plot_external'),
+			config_external
+		);
+
+		const data_charge = {
+			labels: labels,
+			datasets: [{
+				label: 'Charge',
+				backgroundColor: 'rgb(255, 0, 0)',
+				borderColor: 'rgb(255, 0, 0)',
+				data: {{ data_charge | tojson}},
+			}]
+		};
+
+		const config_charge = {
+			type: 'line',
+			data: data_charge,
+			options: { maintainAspectRatio: false }
+		};
+
+		const plot_charge = new Chart(
+			document.getElementById('plot_charge'),
+			config_charge
+		);
+
+		const data_internal_battery = {
+			labels: labels,
+			datasets: [{
+				label: 'Feed-In with Storage',
+				backgroundColor: 'rgb(255, 0, 0)',
+				borderColor: 'rgb(255, 0, 0)',
+				data: {{ data_internal_battery | tojson}},
+			}]
+		};
+
+		const config_internal_battery = {
+			type: 'line',
+			data: data_internal_battery,
+			options: { maintainAspectRatio: false }
+		};
+
+		const plot_internal_battery = new Chart(
+			document.getElementById('plot_internal_battery'),
+			config_internal_battery
+		);
+
+		const data_external_battery = {
+			labels: labels,
+			datasets: [{
+				label: 'External Supply with Storage',
+				backgroundColor: 'rgb(255, 0, 0)',
+				borderColor: 'rgb(255, 0, 0)',
+				data: {{ data_external_battery | tojson}},
+			}]
+		};
+
+		const config_external_battery = {
+			type: 'line',
+			data: data_external_battery,
+			options: { maintainAspectRatio: false }
+		};
+
+		const plot_external_battery = new Chart(
+			document.getElementById('plot_external_battery'),
+			config_external_battery
 		);
 
 	</script>

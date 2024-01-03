@@ -14,4 +14,5 @@ def test_data_parser():
     values_day = dp.data_by_fields(['internal_supply', 'external_supply'])
     assert isinstance(values_day, np.ndarray)
     assert values_day.shape[1] == 2
+    assert dp.interval == 0.25
     
