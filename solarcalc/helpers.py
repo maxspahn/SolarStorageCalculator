@@ -17,16 +17,23 @@ class DataParser():
 
     _header: List[str]
     _interval: float
+    _length: int
 
     def __init__(self):
         self._header = []
         self._data = []
         self._interval = 1.0
+        self._length = 24 * 4
 
     def parse(self, file_name: str):
         self._data = pd.read_csv(file_name, delimiter=';', thousands=',')
         self._header = self._data.columns
         self._interval = int(re.split('"|:', self._data[self._header[0]][0])[2])/60
+        self._length = self._data.shape[0]
+
+    @property
+    def length(self) -> int:
+        return self._length
 
     @property
     def interval(self) -> float:
@@ -46,7 +53,7 @@ class DataParser():
         return np.array(data_list).transpose()
 
     def get_times(self) -> List[float]:
-        return [f"{i//4}" for i in range(24*4)]
+        return [f"{i%24//4}" for i in range(self.length)]
 
     @property
     def header(self) -> List[str]:

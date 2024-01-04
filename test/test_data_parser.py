@@ -15,4 +15,5 @@ def test_data_parser():
     assert isinstance(values_day, np.ndarray)
     assert values_day.shape[1] == 2
     assert dp.interval == 0.25
+    assert dp.length == 96
     
