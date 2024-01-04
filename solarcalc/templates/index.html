@@ -34,11 +34,15 @@
 
       <label for="selected_day">Enter day:</label>
       <input type="text" id="selected_day" name="selected_day" value="{{ selected_day }}">
-      <label for="initial_charge">Enter initial_charge:</label>
+      <label for="initial_charge">Enter initial_charge in kWh:</label>
       <input type="text" id="initial_charge" name="initial_charge" value="{{ initial_charge }}">
-      <label for="capacity">Enter capacity:</label>
+      <label for="capacity">Enter capacity in kWh:</label>
       <input type="text" id="capacity" name="capacity" value="{{ capacity }}">
-      <input type="submit" value="Compute">
+      <label for="price_feed_in">Price Feed-In in €:</label>
+      <input type="text" id="price_feed_in" name="price_feed_in" value="{{ price_feed_in }}">
+      <label for="price_external">Price External in €:</label>
+      <input type="text" id="price_external" name="price_external" value="{{ price_external }}">
+      <input type="submit" value="Select">
   </form>
   <div>
     <div class="canvas-container">
@@ -63,14 +67,29 @@
     </div>
   </div>
 
+  <br>
+
   <label for="sum_feed_in">Sum Feed-In</label>
-  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_feed_in }}" readonly>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_feed_in }}kWh" readonly>
   <label for="sum_external">Sum External</label>
-  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_external }}" readonly>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_external }}kWh" readonly>
   <label for="sum_feed_in">Sum Feed-In with Storage</label>
-  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_feed_in_battery }}" readonly>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_feed_in_battery }}kWh" readonly>
   <label for="sum_external">Sum External with Storage</label>
-  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_external_battery }}" readonly>
+  <input type="text" id="sum_feed_in" name="Sum Feed-In" value="{{ sum_external_battery }}kWh" readonly>
+  <br>
+  <label for="revenue_feed_in">Rev. Feed-In</label>
+  <input type="text" value="{{ revenue_feed_in }}€" readonly>
+  <label for="costs_external">Cos. External</label>
+  <input type="text" value="{{ costs_external }}€" readonly>
+  <label for="revenue_feed_in">Rev. Feed-In with Storage</label>
+  <input type="text" value="{{ revenue_feed_in_battery }}€" readonly>
+  <label for="costs_external">Cos. External with Storage</label>
+  <input type="text" value="{{ costs_external_battery }}€" readonly>
+  <br>
+  <label for="gain"><b>Net Gain in given time period</b></label>
+  <input type="text" value="{{ gain }}" readonly>
+
 
 	<script>
 		const labels = {{ labels | tojson}};
