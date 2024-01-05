@@ -22,8 +22,8 @@ def homepage():
             # Get the value entered in the form field
             selected_field = request.form['selected_field']
             selected_day = request.form['selected_day']
-            initial_charge = float(request.form['initial_charge']) * 1000
-            capacity = float(request.form['capacity']) * 1000
+            initial_charge = float(request.form['initial_charge'])
+            capacity = float(request.form['capacity'])
             price_feed_in = float(request.form['price_feed_in'])
             price_external = float(request.form['price_external'])
 
