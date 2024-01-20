@@ -7,25 +7,6 @@ const FIELDS_MAP = {
   'generation': 6,
 };
 
-function convertTimes(timesInHours) {
-    const result = [];
-
-    for (const timeInHours of timesInHours) {
-        const totalMinutes = Math.floor(timeInHours * 60);
-        const months = Math.floor(totalMinutes / (30 * 24 * 60)); // Assuming 30 days in a month
-        const remainingDays = Math.floor((totalMinutes % (30 * 24 * 60)) / (24 * 60));
-        const remainingHours = Math.floor((totalMinutes % (24 * 60)) / 60);
-        const remainingMinutes = totalMinutes % 60;
-
-
-        const formattedTime = `${months}m:${remainingDays}d:${remainingHours}h:${remainingMinutes}m`;
-
-        result.push(formattedTime);
-    }
-
-    return result;
-}
-
 
 class DataParser {
   constructor() {
