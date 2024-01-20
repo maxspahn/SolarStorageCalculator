@@ -98,7 +98,6 @@
           const reader = new FileReader();
           reader.onload = function (event) {
               const fileContent = event.target.result;
-              console.log('File Content:', fileContent);
               parser.parse(fileContent);
               updateChart();
           };
