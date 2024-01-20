@@ -11,14 +11,18 @@
     <script src="helpers.js"></script>
 </head>
 <body>
+  <h1>Solar Calculator</h1>
+  <p>
+  First, select a data file.
+  </p>
 
 <!-- Form for user input -->
 <form id="inputForm">
-    <label for="selectedDay">Select Day:</label>
-    <input type="text" id="selectedDay" value="days/20230606" required>
-
-    <label for="selectedField">Select Field:</label>
-    <input type="text" id="selectedField" value="internal_supply" required>
+    <input type="file" id="fileInput" accept=".csv" onchange="handleFileUpload()">
+</form>
+<!-- Container for the chart -->
+<div id="containerFlowPlot" style="height: 400px; width: 100%;"></div>
+<form id="inputForm">
 
     <label for="initialCharge">Initial Charge:</label>
     <input type="number" id="initialCharge" value="10000" required>
@@ -32,15 +36,9 @@
     <label for="priceExternal">Price External:</label>
     <input type="number" id="priceExternal" value="0.405" step="0.01" required>
 
-    <button type="button" onclick="loadData()">Load Data</button>
-    <button type="button" onclick="updateChart()">Update Chart</button>
     <button type="button" onclick="computeScenario()">Compute Scenario</button>
-    <input type="file" id="fileInput" accept=".csv" onchange="handleFileUpload()">
-
 </form>
 
-<!-- Container for the chart -->
-<div id="containerFlowPlot" style="height: 400px; width: 100%;"></div>
 <div id="containerStorageFlowPlot" style="display: inline-block; height: 400px; width: 48%;"></div>
 <div id="containerStoragePlot" style="display: inline-block; height: 400px; width: 48%;"></div>
 
@@ -48,14 +46,18 @@
     function getLayout(name) {
       return {
         title: name,
-        xaxis: { title: 'Time' },
+
+        xaxis: {
+          title: 'Time',
+          nticks: 10,
+        },
         yaxis: { title: 'Value' },
       };
     }
     const lineProperties = {
       type: 'scatter',
       mode: 'lines',
-      line: { 'shape': 'spline', 'smoothing': 1.3 }
+      line: { 'shape': 'spline', 'smoothing': 0.6 }
     };
     function addTrace(plotData, times, trace, name) {
       plotData.push({
@@ -101,7 +103,8 @@
 
     async function updateChart() {
         // Extract required columns
-        let times = parser.times();
+        let times = convertTimes(parser.times());
+        
         let consumptionData = parser.dataByField('consumption');
         let productionData = parser.dataByField('generation');
         let feedInData = parser.dataByField('feed-in');
